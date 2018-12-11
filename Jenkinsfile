@@ -14,6 +14,11 @@ pipeline {
           sh 'node --version'
         }
       }
+      post {
+        success {
+          stash name: 'app', includes: '*.js, public/**, views/*, Dockerfile'
+        }
+      }
     }
     stage('Build and Push Image') {
       when {
