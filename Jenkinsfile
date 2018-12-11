@@ -1,12 +1,31 @@
 pipeline {
   agent none
+  options { 
+    buildDiscarder(logRotator(numToKeepStr: '2'))
+    skipDefaultCheckout true
+  }
   stages {
-    stage('Say Hello') {
+    stage('Test') {
       agent { label 'nodejs-app' }
       steps {
+        checkout scm
         container('nodejs') {
           echo 'Hello World!'   
           sh 'node --version'
+        }
+      }
+    }
+    stage('Build and Push Image') {
+      when {
+         beforeAgent true
+         branch 'master'
+      }
+      steps {
+         echo "TODO - build and push image"
+      }
+      post {
+        success {
+          slackSend "${JOB_NAME} pipeline job is awaiting approval at: ${RUN_DISPLAY_URL}"
         }
       }
     }
@@ -20,12 +39,11 @@ pipeline {
       }
       input {
         message "Should we deploy?"
-        submitter "sroskelley,roskelleycj"
         submitterParameter "APPROVER"
       }
       steps {
-        echo "Continuing with deployment"
+        echo "Continuing with deployment - approved by ${APPROVER}"
       }
-    }
+    }   
   }
 }
