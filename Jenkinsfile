@@ -27,6 +27,7 @@ pipeline {
       }
       steps {
          echo "TODO - build and push image"
+         unstash 'app'
       }
       post {
         success {
