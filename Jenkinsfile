@@ -25,7 +25,7 @@ pipeline {
       }
       post {
         success {
-          slackSend "${JOB_NAME} pipeline job is awaiting approval at: ${RUN_DISPLAY_URL}"
+          echo "slackSend ${JOB_NAME} pipeline job is awaiting approval at: ${RUN_DISPLAY_URL}"
         }
       }
     }
