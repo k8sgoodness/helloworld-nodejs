@@ -3,8 +3,8 @@ pipeline {
   stages {
     stage('Say Hello') {
       agent { label 'nodejs-app' }
-      container('nodejs') {
-        steps {
+      steps {
+        container('nodejs') {
           echo 'Hello World!'   
           sh 'node -version'
         }
